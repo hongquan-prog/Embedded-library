@@ -1,0 +1,15 @@
+include $(MOD_CFG)
+
+SRC_DIR := .
+INC_DIR := .
+# ifneq ("$(COMMON_INC_DIR)","")
+# INC_DIR += $(COMMON_INC_DIR)
+# endif
+
+# TYPE_INC := .h
+# TYPE_SRC := .c
+# TYPE_OBJ := .o 
+# TYPE_DEP := .dep 
+
+include $(MOD_CMD)
+include $(MOD_RULE)
