@@ -1,15 +1,19 @@
-include $(MOD_CFG)
+MODULE := $(notdir $(realpath .))
+CURRENT_BUILD_DIR := $(addsuffix /$(MODULE),$(BUILD_DIR))
 
-SRC_DIR := .
-INC_DIR := .
-# ifneq ("$(COMMON_INC_DIR)","")
-# INC_DIR += $(COMMON_INC_DIR)
-# endif
+SUB_MODULES := $(wildcard *)
+SUB_MODULES := $(filter-out Makefile, $(SUB_MODULES))
+SUB_MODULE_LIBS := $(addsuffix .a, $(SUB_MODULES))
+SUB_MODULE_LIBS := $(addprefix $(CURRENT_BUILD_DIR)/lib, $(SUB_MODULE_LIBS))
+BUILD_SUB_DIR := $(addprefix $(CURRENT_BUILD_DIR)/, $(SUB_MODULES))
 
-# TYPE_INC := .h
-# TYPE_SRC := .c
-# TYPE_OBJ := .o 
-# TYPE_DEP := .dep 
+include $(MOD_COMPILE)
 
-include $(MOD_CMD)
-include $(MOD_RULE)
+$(SUB_MODULE_LIBS): $(CURRENT_BUILD_DIR) $(BUILD_SUB_DIR)
+	@for dir in $(SUB_MODULES); \
+    do \
+        $(call compile_module, $$dir, $(CURRENT_BUILD_DIR)) \
+    done
+
+$(CURRENT_BUILD_DIR) $(BUILD_SUB_DIR):
+	mkdir $@

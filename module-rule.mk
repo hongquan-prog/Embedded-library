@@ -1,8 +1,6 @@
-.PHONY: all
-
 MODULE := $(notdir $(realpath .))
 OUTPUT_DIR := $(addprefix $(BUILD_DIR)/,$(MODULE))
-OUTPUT := $(addprefix $(BUILD_DIR)/lib,$(MODULE).a)
+OUTPUT := $(addprefix $(OUTPUT_DIR)/lib,$(MODULE).a)
 
 SRCS := $(wildcard $(SRC_DIR)/*$(TYPE_SRC))
 SRCS := $(notdir $(SRCS))
@@ -30,5 +28,3 @@ endif
 
 $(OUTPUT_DIR)/%$(TYPE_OBJ):%$(TYPE_SRC)
 	$(CC) $(CFLAGS) -o $@ -c $(filter %$(TYPE_SRC),$^)
-
-all: $(OUTPUT)
