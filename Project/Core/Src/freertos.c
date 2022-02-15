@@ -26,12 +26,16 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <stdio.h>
+#include "LinkList.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+struct list_node
+{
+    struct link_list_node next;
+    int data;
+};
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -115,10 +119,26 @@ void MX_FREERTOS_Init(void) {
 void defaultTaskEntry(void *argument)
 {
   /* USER CODE BEGIN defaultTaskEntry */
+  LinkList* list = link_list_create();
+
+  for(int i = 0; i < 10; i++)
+  {
+    struct list_node* node = malloc(sizeof(struct list_node));
+    if(node)
+    {
+      node->data = i;
+      list_insert(list, i, node);
+    }
+  }
   /* Infinite loop */
   for(;;)
   {
-    printf("Hello World!");
+    for(list_begin(list); !list_end(list); list_next(list))
+    {
+        struct list_node* ret = list_current(list);
+        printf("%d ", ret->data);
+    }
+    printf("\r\n");
     osDelay(1000);
   }
   /* USER CODE END defaultTaskEntry */

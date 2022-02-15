@@ -20,7 +20,7 @@ TARGET = Project
 # building variables
 ######################################
 # debug build?
-DEBUG = 1
+DEBUG := 0
 # optimization
 OPT = -Og
 
@@ -76,7 +76,7 @@ Core/Src/stm32f7xx_hal_timebase_tim.c \
 ../Bsp/Middlewares/Third_Party/FreeRTOS/Source/timers.c \
 ../Bsp/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c \
 ../Bsp/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c \
-../Bsp/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/port.c \
+../Bsp/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/port.c 
 
 # ASM sources
 ASM_SOURCES =  \
@@ -162,6 +162,7 @@ C_INCLUDES =  \
 -I../Bsp/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1 \
 -I../Bsp/CMSIS/Device/ST/STM32F7xx/Include \
 -I../Bsp/CMSIS/Include \
+-I../DataStructure
 
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
@@ -176,7 +177,6 @@ endif
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 
-
 #######################################
 # LDFLAGS
 #######################################
@@ -184,8 +184,8 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 LDSCRIPT = STM32F767IGTx_FLASH.ld
 
 # libraries
-LIBS = -lc -lm -lnosys 
-LIBDIR = 
+LIBS = -lc -lm -lnosys -lDataStructure
+LIBDIR = -L../build/DataStructure
 LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 
 # default action: build all

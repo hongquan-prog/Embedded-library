@@ -1,3 +1,5 @@
+.PHONY: flash clean
+
 ######################################
 # module
 ######################################
@@ -24,23 +26,42 @@ MOD_COMPILE := module-compile.mk
 MODULE_LIBS := $(addsuffix .a, $(MODULES))
 MODULE_LIBS := $(addprefix $(DIR_BUILD)/lib, $(MODULE_LIBS))
 
+# debug option
+DEBUG := 1
 
-include $(MOD_COMPILE)
+#######################################
+# Project
+#######################################
+TARGET_DIR := Project
+TARGET_BUILD_DIR := $(TARGET_DIR)/build
+TARGET := $(TARGET_BUILD_DIR)/Project.bin
+
 
 #######################################
 # default goals
 #######################################
-$(MODULE_LIBS): $(ROOT_BUILD_DIR) $(BUILD_SUB_DIR)
+include $(MOD_COMPILE)
+$(TARGET): $(ROOT_BUILD_DIR) $(BUILD_SUB_DIR) Makefile
+    # compile module
 	@for dir in $(MODULES); \
-        do \
-            $(call compile_module, $$dir, $(ROOT_BUILD_DIR)) \
-        done
+    do \
+        $(call compile_module, $$dir, $(ROOT_BUILD_DIR)) \
+    done
+    # compile peoject
+	@cd $(TARGET_DIR) && $(MAKE) \
+    DEBUG:=$(DEBUG)
+
+#######################################
+# download
+#######################################
+flash:
+	@cd $(TARGET_DIR) && $(MAKE) $@
 
 #######################################
 # command goals
 #######################################
 $(MODULES): $(ROOT_BUILD_DIR) $(ROOT_BUILD_DIR)/$(MAKECMDGOALS)
-	$(call compile_module, $@)
+	@$(call compile_module, $@, $(ROOT_BUILD_DIR))
 
 #######################################
 # create directory
@@ -52,8 +73,8 @@ $(ROOT_BUILD_DIR) $(BUILD_SUB_DIR):
 # clean up
 #######################################
 clean:
-	-rm -fR $(ROOT_BUILD_DIR)
-  
+	-rm -fR $(ROOT_BUILD_DIR) $(TARGET_BUILD_DIR)
+
 #######################################
 # dependencies
 #######################################
