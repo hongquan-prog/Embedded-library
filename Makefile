@@ -1,4 +1,4 @@
-.PHONY: flash clean
+.PHONY: flash clean all
 
 ######################################
 # module
@@ -41,7 +41,7 @@ TARGET := $(TARGET_BUILD_DIR)/Project.bin
 # default goals
 #######################################
 include $(MOD_COMPILE)
-$(TARGET): $(ROOT_BUILD_DIR) $(BUILD_SUB_DIR) Makefile
+all: $(ROOT_BUILD_DIR) $(BUILD_SUB_DIR) Makefile
     # compile module
 	@for dir in $(MODULES); \
     do \

@@ -1,3 +1,5 @@
+.PHONY: all
+
 MODULE := $(notdir $(realpath .))
 CURRENT_BUILD_DIR := $(addsuffix /$(MODULE),$(BUILD_DIR))
 
@@ -9,7 +11,7 @@ BUILD_SUB_DIR := $(addprefix $(CURRENT_BUILD_DIR)/, $(SUB_MODULES))
 
 include $(MOD_COMPILE)
 
-$(SUB_MODULE_LIBS): $(CURRENT_BUILD_DIR) $(BUILD_SUB_DIR)
+all: $(CURRENT_BUILD_DIR) $(BUILD_SUB_DIR) Makefile
 	@for dir in $(SUB_MODULES); \
     do \
         $(call compile_module, $$dir, $(CURRENT_BUILD_DIR)) \
