@@ -27,7 +27,7 @@ MODULE_LIBS := $(addsuffix .a, $(MODULES))
 MODULE_LIBS := $(addprefix $(DIR_BUILD)/lib, $(MODULE_LIBS))
 
 # debug option
-DEBUG := 1
+DEBUG := 0
 
 #######################################
 # Project

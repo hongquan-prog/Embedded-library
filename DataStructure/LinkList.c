@@ -4,30 +4,21 @@
 
 #include "LinkList.h"
 
-typedef struct
-{
-    // 虚函数表指针必须放在最前面四个字节
-    const list_vtable_def *m_vtable;
-    // 用于保存遍历当前位置
-    struct link_list_node *m_current;
-    // 头节点
-    struct link_list_node m_head;
-    // 链表长度
-    int m_length;
-} link_list_def;
 
 LinkListNode link_list_position(LinkList *list, int position)
 {
     link_list_def *obj = (link_list_def *)list;
     struct link_list_node *current = (struct link_list_node *)(&(obj->m_head));
+
     for (int i = 0; i < position; i++)
     {
         current = current->next;
     }
+
     return current;
 }
 
-LinkList *link_list_create()
+LinkList *link_list_create(list_create_t type, LinkList* list)
 {
     static list_vtable_def s_link_list_vtable = {
             .insert = link_list_insert,
@@ -43,21 +34,38 @@ LinkList *link_list_create()
             .pre = NULL,
             .current = link_list_current};
 
-    link_list_def *list = malloc(sizeof(link_list_def));
-    if (list)
+    link_list_def *ret = NULL;
+
+    if(type == LIST_CREATE_DYNAMIC)
     {
-        list->m_current = NULL;
-        list->m_length = 0;
-        list->m_vtable = &s_link_list_vtable;
-        list->m_head.next = NULL;
+        ret = malloc(sizeof(link_list_def));
+        if(ret)
+        {
+            ret->m_current = NULL;
+            ret->m_length = 0;
+            ret->m_vtable = &s_link_list_vtable;
+            ret->m_head.next = NULL;
+            ret->m_is_static = false;
+        }
     }
-    return (LinkList *)list;
+    else if (list)
+    {
+        ret = (link_list_def *)list;
+        ret->m_current = NULL;
+        ret->m_length = 0;
+        ret->m_vtable = &s_link_list_vtable;
+        ret->m_head.next = NULL;
+        ret->m_is_static = true;
+    }
+
+    return (LinkList *)ret;
 }
 
 bool link_list_insert(LinkList *list, int i, const LinkListNode node)
 {
     bool ret = true;
     link_list_def *obj = (link_list_def *)list;
+
     if (obj && (i >= 0) && (i <= obj->m_length) && node)
     {
         struct link_list_node *current = link_list_position(obj, i);
@@ -72,6 +80,7 @@ bool link_list_insert(LinkList *list, int i, const LinkListNode node)
     {
         ret = false;
     }
+
     return ret;
 }
 
@@ -79,6 +88,7 @@ LinkListNode link_list_remove(LinkList *list, int i)
 {
     LinkListNode ret = NULL;
     link_list_def *obj = (link_list_def *)list;
+
     if (obj && (i >= 0) && (i < obj->m_length))
     {
         struct link_list_node *current = link_list_position(obj, i);
@@ -90,6 +100,7 @@ LinkListNode link_list_remove(LinkList *list, int i)
             --obj->m_length;
         }
     }
+
     return ret;
 }
 
@@ -102,6 +113,7 @@ int link_list_find(LinkList *list, const LinkListNode node)
 {
     int ret = -1;
     link_list_def *obj = (link_list_def *)list;
+
     if (obj && node)
     {
         struct link_list_node *current = &(obj->m_head);
@@ -115,6 +127,7 @@ int link_list_find(LinkList *list, const LinkListNode node)
             }
         }
     }
+
     return ret;
 }
 
@@ -122,6 +135,7 @@ bool link_list_get(LinkList *list, int i, LinkListNode *node)
 {
     bool ret = true;
     link_list_def *obj = (link_list_def *)list;
+
     if (obj && (i >= 0) && (i < obj->m_length) && node)
     {
         struct link_list_node *current = link_list_position(obj, i);
@@ -131,12 +145,16 @@ bool link_list_get(LinkList *list, int i, LinkListNode *node)
     {
         ret = false;
     }
+
     return ret;
 }
 
 void link_list_destroy(LinkList *list)
 {
-    free(list);
+    if(((link_list_def *)list)->m_is_static == LIST_CREATE_DYNAMIC)
+    {
+        free(list);
+    }
 }
 
 void link_list_begin(LinkList *list)
@@ -158,10 +176,12 @@ void link_list_next(LinkList *list)
 bool link_list_end(LinkList *list)
 {
     bool ret = false;
+
     if (list)
     {
         ret = (((link_list_def *)list)->m_current == NULL);
     }
+
     return ret;
 }
 

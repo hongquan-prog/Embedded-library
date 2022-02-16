@@ -2,13 +2,19 @@
 // Created by lhq on 2022/2/15.
 //
 
-#ifndef DATA_STRUCTURE_LIST_H
-#define DATA_STRUCTURE_LIST_H
+#ifndef EMBEDDED_LIST_H
+#define EMBEDDED_LIST_H
 
 #include "err.h"
 
 typedef void List;
 typedef void *ListNode;
+
+typedef enum
+{
+    LIST_CREATE_STATIC,
+    LIST_CREATE_DYNAMIC
+}list_create_t;
 
 typedef struct
 {
@@ -40,4 +46,4 @@ void list_pre(List *list);
 bool list_end(List *list);
 ListNode list_current(List *list);
 
-#endif //LIST_H
+#endif //EMBEDDED_LIST_H

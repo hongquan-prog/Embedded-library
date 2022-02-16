@@ -173,6 +173,12 @@ ifeq ($(DEBUG), 1)
 CFLAGS += -g -gdwarf-2
 endif
 
+# External library
+EXTERNAL_LIB := ../build/DataStructure/libDataStructure.a
+EXTERNAL_NAME := $(notdir $(EXTERNAL_LIB))
+EXTERNAL_NAME := $(patsubst lib%.a, %, $(EXTERNAL_NAME))
+EXTERNAL_LIBDIR := $(dir $(EXTERNAL_LIB))
+EXTERNAL_LIBDIR := $(sort $(EXTERNAL_LIBDIR)) 
 
 # Generate dependency information
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
@@ -184,8 +190,8 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 LDSCRIPT = STM32F767IGTx_FLASH.ld
 
 # libraries
-LIBS = -lc -lm -lnosys -lDataStructure
-LIBDIR = -L../build/DataStructure
+LIBS = -lc -lm -lnosys $(addprefix -l, $(EXTERNAL_NAME))
+LIBDIR = $(addprefix -L, $(EXTERNAL_LIBDIR))
 LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 
 # default action: build all
@@ -210,7 +216,7 @@ $(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
 $(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
 	$(AS) -c $(CFLAGS) $< -o $@
 
-$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
+$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile $(EXTERNAL_LIB)
 	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 	$(SZ) $@
 
