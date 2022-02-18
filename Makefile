@@ -27,14 +27,15 @@ MODULE_LIBS := $(addsuffix .a, $(MODULES))
 MODULE_LIBS := $(addprefix $(DIR_BUILD)/lib, $(MODULE_LIBS))
 
 # debug option
-DEBUG := 0
+DEBUG := 1
 
 #######################################
 # Project
 #######################################
-TARGET_DIR := Project
+TARGET := MetaOS
+TARGET_DIR := Project/$(TARGET)
 TARGET_BUILD_DIR := $(TARGET_DIR)/build
-TARGET := $(TARGET_BUILD_DIR)/Project.bin
+TARGET := $(TARGET_BUILD_DIR)/$(TARGET).bin
 
 
 #######################################

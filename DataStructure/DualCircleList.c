@@ -162,5 +162,5 @@ DualCircleList *dual_circle_list_create(list_create_t type, DualCircleList* list
 
 void dual_circle_list_destroy(DualCircleList *list)
 {
-    dual_link_list_def(list);
+    dual_link_list_destroy(list);
 }

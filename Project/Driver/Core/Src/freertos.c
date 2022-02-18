@@ -26,9 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "LinkList.h"
-#include "DualLinkList.h"
-#include "DualCircleList.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -121,27 +119,10 @@ void MX_FREERTOS_Init(void) {
 void defaultTaskEntry(void *argument)
 {
   /* USER CODE BEGIN defaultTaskEntry */
-    DualCircleList* list = dual_circle_list_create(LIST_CREATE_DYNAMIC, NULL);
 
-  for(int i = 0; i < 10; i++)
-  {
-    struct list_node* node = malloc(sizeof(struct list_node));
-    if(node)
-    {
-      node->data = i;
-      list_insert(list, i, node);
-    }
-  }
   /* Infinite loop */
   for(;;)
   {
-    for(list_begin(list); !list_end(list); list_next(list))
-    {
-        struct list_node* ret = list_current(list);
-        printf("%d \n", ret->data);
-        osDelay(1000);
-    }
-    printf("\r\n");
     osDelay(1000);
   }
   /* USER CODE END defaultTaskEntry */
