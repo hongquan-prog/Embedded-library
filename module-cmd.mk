@@ -14,8 +14,8 @@ C_DEFS =  \
 -DSTM32F767xx
 
 CC := arm-none-eabi-gcc
-CFLAGS += $(addprefix -I, $(INC_DIR))
-CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
+CFLAGS += $(addprefix -I, $(INC_DIR)) 
+CFLAGS += $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -g -gdwarf-2
