@@ -1,5 +1,5 @@
 #pragma once
-#include "iic.h"
+#include "iic_interface.h"
 
 #define HMC_IDENTIFICATION_LEN 3
 

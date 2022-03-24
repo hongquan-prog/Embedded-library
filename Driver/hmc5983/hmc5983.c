@@ -5,9 +5,9 @@
 #define HMC_WRITE (HMC_DEFAULT_ADDR << 1)
 
 #define HMC_LOG(format, ...)
-// #define HMC_LOG(format, ...)         \
-//     {                                \
-//         printf(format, __VA_ARGS__); \
+// #define HMC_LOG(format, ...)         
+//     {                                
+//         printf(format, __VA_ARGS__); 
 //     }
 
 static void hmc5983_read_byte(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char *buf)
