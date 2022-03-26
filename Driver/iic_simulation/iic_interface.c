@@ -1,15 +1,21 @@
 #include "iic_interface.h"
 
+#define ENABLE_DEBUG 1
+
+#if ENABLE_DEBUG
+#include "err.h"
+#define NULL_POINTER_ASSET(p, e)                \
+    {                                           \
+        if (!p)                                 \
+        {                                       \
+            LOG(ERR_CONSTRUCT(NullPointer), e); \
+            while (1)                           \
+                ;                               \
+        }                                       \
+    }
+#else
 #define NULL_POINTER_ASSET(p, e)
-// #define NULL_POINTER_ASSET(p, e)                \
-//     {                                           \
-//         if (!p)                                 \
-//         {                                       \
-//             LOG(ERR_CONSTRUCT(NullPointer), e); \
-//             while (1)                           \
-//                 ;                               \
-//         }                                       \
-//     }
+#endif
 
 void iic_start(iic_interface_t *obj)
 {

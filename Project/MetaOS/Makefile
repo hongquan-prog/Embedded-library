@@ -118,6 +118,7 @@ AS_INCLUDES =
 C_INCLUDES =  \
 -ICore/Inc \
 -I../../DataStructure \
+-I../../Error \
 -I../../Bsp/STM32F7xx_HAL_Driver/Inc \
 -I../../Bsp/STM32F7xx_HAL_Driver/Inc/Legacy \
 -I../../Bsp/CMSIS/Device/ST/STM32F7xx/Include \
@@ -134,7 +135,7 @@ CFLAGS += -g -gdwarf-2
 endif
 
 # External library
-EXTERNAL_LIB := ../../build/DataStructure/libDataStructure.a
+EXTERNAL_LIB := ../../build/DataStructure/libDataStructure.a ../../build/Error/libError.a
 EXTERNAL_NAME := $(notdir $(EXTERNAL_LIB))
 EXTERNAL_NAME := $(patsubst lib%.a, %, $(EXTERNAL_NAME))
 EXTERNAL_LIBDIR := $(dir $(EXTERNAL_LIB))

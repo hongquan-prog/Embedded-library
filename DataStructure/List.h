@@ -6,6 +6,7 @@
 #define EMBEDDED_LIST_H
 
 #include "err.h"
+#include <stdlib.h>
 
 typedef void List;
 typedef void *ListNode;

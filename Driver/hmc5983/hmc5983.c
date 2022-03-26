@@ -1,10 +1,17 @@
 #include "hmc5983.h"
 
+#define ENABLE_DEBUG 0
+
+#if ENABLE_DEBUG
+#include "err.h"
+#define HMC_LOG(e)   LOG(ERR_CONSTRUCT(InvalidParameter), e)
+#else
+#define HMC_LOG(e)
+#endif
+
 #define HMC_DEFAULT_ADDR 0x1E
 #define HMC_READ ((HMC_DEFAULT_ADDR << 1) | 1)
 #define HMC_WRITE (HMC_DEFAULT_ADDR << 1)
-
-#define HMC_LOG(e)   // LOG(ERR_CONSTRUCT(InvalidParameter), e)
 
 static void hmc5983_read_byte(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char *buf)
 {
