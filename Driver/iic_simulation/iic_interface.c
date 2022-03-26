@@ -1,6 +1,6 @@
 #include "iic_interface.h"
 
-#define ENABLE_DEBUG 1
+#define ENABLE_DEBUG 0
 
 #if ENABLE_DEBUG
 #include "err.h"
