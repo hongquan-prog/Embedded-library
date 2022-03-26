@@ -1,7 +1,7 @@
 include $(MOD_CFG)
 
 SRC_DIR := .
-INC_DIR := ../iic_simulation
+INC_DIR := .
 # ifneq ("$(COMMON_INC_DIR)","")
 # INC_DIR += $(COMMON_INC_DIR)
 # endif

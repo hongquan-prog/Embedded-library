@@ -4,30 +4,26 @@
 #define HMC_READ ((HMC_DEFAULT_ADDR << 1) | 1)
 #define HMC_WRITE (HMC_DEFAULT_ADDR << 1)
 
-#define HMC_LOG(format, ...)
-// #define HMC_LOG(format, ...)         \
-//     {                                \
-//         printf(format, __VA_ARGS__); \
-//     }
+#define HMC_LOG(e)   // LOG(ERR_CONSTRUCT(InvalidParameter), e)
 
 static void hmc5983_read_byte(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char *buf)
 {
     if (obj)
     {
-        obj->iic->start();
-        obj->iic->write_byte(HMC_WRITE);
-        obj->iic->wait_ack();
-        obj->iic->write_byte(reg);
-        obj->iic->wait_ack();
-        obj->iic->start();
-        obj->iic->write_byte(HMC_READ);
-        obj->iic->wait_ack();
-        *buf = obj->iic->read_byte(0);
-        obj->iic->stop();
+        iic_start(obj->iic);
+        iic_write_byte(obj->iic, HMC_WRITE);
+        iic_wait_ack(obj->iic);
+        iic_write_byte(obj->iic, reg);
+        iic_wait_ack(obj->iic);
+        iic_start(obj->iic);
+        iic_write_byte(obj->iic, HMC_READ);
+        iic_wait_ack(obj->iic);
+        *buf = iic_read_byte(obj->iic, 0);
+        iic_stop(obj->iic);
     }
     else
     {
-        HMC_LOG("Invalid parameter, obj: 0x%x\r\n", obj);
+        HMC_LOG("please check obj\r\n");
     }
 }
 
@@ -37,25 +33,25 @@ static void hmc5983_read_bytes(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char
 
     if (obj)
     {
-        obj->iic->start();
-        obj->iic->write_byte(HMC_WRITE);
-        obj->iic->wait_ack();
-        obj->iic->write_byte(reg);
-        obj->iic->wait_ack();
-        obj->iic->start();
-        obj->iic->write_byte(HMC_READ);
-        obj->iic->wait_ack();
+        iic_start(obj->iic);
+        iic_write_byte(obj->iic, HMC_WRITE);
+        iic_wait_ack(obj->iic);
+        iic_write_byte(obj->iic, reg);
+        iic_wait_ack(obj->iic);
+        iic_start(obj->iic);
+        iic_write_byte(obj->iic, HMC_READ);
+        iic_wait_ack(obj->iic);
 
         for (i = 0; i < len - 1; i++)
         {
-            buf[i] = obj->iic->read_byte(1);
+            buf[i] = iic_read_byte(obj->iic, 1);
         }
-        buf[i] = obj->iic->read_byte(0);
-        obj->iic->stop();
+        buf[i] = iic_read_byte(obj->iic, 0);
+        iic_stop(obj->iic);
     }
     else
     {
-        HMC_LOG("Invalid parameter, obj: 0x%x\r\n", obj);
+        HMC_LOG("please check obj\r\n");
     }
 }
 
@@ -63,18 +59,18 @@ static void hmc5983_write_byte(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char
 {
     if (obj)
     {
-        obj->iic->start();
-        obj->iic->write_byte(HMC_WRITE);
-        obj->iic->wait_ack();
-        obj->iic->write_byte(reg);
-        obj->iic->wait_ack();
-        obj->iic->write_byte(val);
-        obj->iic->wait_ack();
-        obj->iic->stop();
+        iic_start(obj->iic);
+        iic_write_byte(obj->iic, HMC_WRITE);
+        iic_wait_ack(obj->iic);
+        iic_write_byte(obj->iic, reg);
+        iic_wait_ack(obj->iic);
+        iic_write_byte(obj->iic, val);
+        iic_wait_ack(obj->iic);
+        iic_stop(obj->iic);
     }
     else
     {
-        HMC_LOG("Invalid parameter, obj: 0x%x\r\n", obj);
+        HMC_LOG("please check obj\r\n");
     }
 }
 
@@ -97,7 +93,7 @@ unsigned char hmc5983_init(hmc5983_t *obj, iic_interface_t *iic, hmc_measurement
     }
     else
     {
-        HMC_LOG("Invalid parameter, obj: 0x%x, iic: 0x%x\r\n", obj, iic);
+        HMC_LOG("please check obj and iic\r\n");
     }
 
     return ret;
@@ -119,7 +115,7 @@ static unsigned char hmc5983_set_parameter(hmc5983_t *obj, hmc_reg_addr_t reg, u
     }
     else
     {
-        HMC_LOG("Invalid parameter, obj: 0x%x, value: 0x%x\r\n", obj, value);
+        HMC_LOG("please check obj and val\r\n");
     }
 
     return ret;
@@ -138,7 +134,7 @@ static unsigned char hmc5983_get_parameter(hmc5983_t *obj, hmc_reg_addr_t reg, u
     }
     else
     {
-        HMC_LOG("Invalid parameter, obj: 0x%x, val: 0x%x\r\n", obj, val);
+        HMC_LOG("please check obj and val\r\n");
     }
 
     return ret;
@@ -215,7 +211,7 @@ unsigned char hmc5983_get_result(hmc5983_t *obj, short *x, short *y, short *z)
         }
         break;
     default:
-        HMC_LOG("Unknown mode: %d\r\n", obj->mode);
+        HMC_LOG("please check obj->mode\r\n");
         ret = 0;
         break;
     }

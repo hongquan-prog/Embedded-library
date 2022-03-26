@@ -1,5 +1,5 @@
 #pragma once
-#include "iic.h"
+#include "iic_simulation.h"
 
 #define HMC_IDENTIFICATION_LEN 3
 
@@ -81,7 +81,6 @@ typedef enum hmc_measurement_mode
 typedef struct hmc5983
 {
     char dentification[HMC_IDENTIFICATION_LEN];
-
     // iic interface
     iic_interface_t *iic;
     // work mode

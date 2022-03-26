@@ -4,6 +4,7 @@
 # module
 ######################################
 MODULES := Driver \
+Error \
 DataStructure \
 FileSystem \
 MemoryManage \
