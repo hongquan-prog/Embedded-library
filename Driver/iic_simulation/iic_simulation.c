@@ -41,6 +41,7 @@ void iic_sim_stop(iic_interface_t *p)
     obj->hardware->scl_write(1);
     obj->hardware->delay();
     obj->hardware->sda_write(1);
+    obj->hardware->delay();
 }
 
 unsigned char iic_sim_wait_ack(iic_interface_t *p)
