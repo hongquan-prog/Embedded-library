@@ -20,10 +20,10 @@ BUILD_SUB_DIR := $(addprefix $(ROOT_BUILD_DIR)/, $(MODULES))
 #######################################
 # module
 #######################################
-MOD_CFG := module-cfg.mk
-MOD_CMD := module-cmd.mk
-MOD_RULE := module-rule.mk
-MOD_COMPILE := module-compile.mk
+MODULE_CFG := module-cfg.mk
+MODULE_CMD := module-cmd.mk
+MODULE_RULE := module-rule.mk
+MODULE_COMPILE := module-compile.mk
 MODULE_LIBS := $(addsuffix .a, $(MODULES))
 MODULE_LIBS := $(addprefix $(DIR_BUILD)/lib, $(MODULE_LIBS))
 
@@ -42,7 +42,7 @@ TARGET := $(TARGET_BUILD_DIR)/$(TARGET).bin
 #######################################
 # default goals
 #######################################
-include $(MOD_COMPILE)
+include $(MODULE_COMPILE)
 all: $(ROOT_BUILD_DIR) $(BUILD_SUB_DIR) Makefile
     # compile module
 	@for dir in $(MODULES); \

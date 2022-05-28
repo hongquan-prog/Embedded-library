@@ -27,4 +27,5 @@ endif
 	$(CC) $(CFLAGS) -MM -E $(filter %$(TYPE_SRC), $^) | sed 's,\(.*\)\.o[ :]*,$(OUTPUT_DIR)/\1.o $@:,g' > $@
 
 $(OUTPUT_DIR)/%$(TYPE_OBJ):%$(TYPE_SRC)
+	echo $(INC_DIR)
 	$(CC) $(CFLAGS) -o $@ -c $(filter %$(TYPE_SRC),$^)

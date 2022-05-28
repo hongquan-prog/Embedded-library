@@ -1,4 +1,4 @@
-include $(MOD_CFG)
+include $(MODULE_CFG)
 
 SRC_DIR := .
 INC_DIR := .
@@ -11,5 +11,5 @@ INC_DIR := .
 # TYPE_OBJ := .o 
 # TYPE_DEP := .dep 
 
-include $(MOD_CMD)
-include $(MOD_RULE)
+include $(MODULE_CMD)
+include $(MODULE_RULE)

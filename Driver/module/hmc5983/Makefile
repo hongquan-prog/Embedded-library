@@ -1,7 +1,7 @@
 include $(MODULE_CFG)
 
 SRC_DIR := .
-INC_DIR := ../Error
+INC_DIR := ../../interface/iic_interface
 # ifneq ("$(COMMON_INC_DIR)","")
 # INC_DIR += $(COMMON_INC_DIR)
 # endif
