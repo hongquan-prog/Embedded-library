@@ -47,7 +47,11 @@ all: $(ROOT_BUILD_DIR) $(BUILD_SUB_DIR) Makefile
     # compile module
 	@for dir in $(MODULES); \
     do \
-        $(call compile_module, $$dir, $(ROOT_BUILD_DIR)) \
+        if [ -e "$$dir/Makefile" ]; then \
+        	$(call compile_module, $$dir, $(ROOT_BUILD_DIR)) \
+		elif [ -e "$$dir/makefile" ]; then \
+		    $(call compile_module, $$dir, $(ROOT_BUILD_DIR)) \
+		fi \
     done
     # compile peoject
 	@cd $(TARGET_DIR) && $(MAKE) \

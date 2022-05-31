@@ -11,7 +11,7 @@
 
 #define ENABLE_GLOBAL_DEBUG 0
 #if (defined(ENABLE_GLOBAL_DEBUG) && (ENABLE_GLOBAL_DEBUG == 1))
-#define NULL_ASSET(p)                     \
+#define DEBUG_ASSET(p)                    \
   {                                       \
     if (!(p))                             \
     {                                     \
@@ -21,10 +21,10 @@
     }                                     \
   }
 #else
-#define NULL_ASSET(p) \
-  {                   \
-    while (!(p))      \
-      ;               \
+#define DEBUG_ASSET(p) \
+  {                    \
+    while (!(p))       \
+      ;                \
   }
 #endif
 

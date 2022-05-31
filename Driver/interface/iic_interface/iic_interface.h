@@ -16,7 +16,7 @@ typedef struct
     void (*sda_write)(unsigned char level);
     void (*delay)(void);
     unsigned char (*sda_read)(void);
-} iic_hardware_interface_t;
+} iic_hardware_drv_t;
 
 typedef struct
 {

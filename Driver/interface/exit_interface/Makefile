@@ -1,7 +1,9 @@
 include $(MODULE_CFG)
 
 SRC_DIR := .
-INC_DIR := ../../../Error
+INC_DIR := \
+. \
+../../../Error
 # ifneq ("$(COMMON_INC_DIR)","")
 # INC_DIR += $(COMMON_INC_DIR)
 # endif

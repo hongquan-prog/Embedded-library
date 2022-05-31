@@ -5,10 +5,10 @@
 typedef struct 
 {
     iic_vtable_t *vtabel;
-    iic_hardware_interface_t *hardware;
+    iic_hardware_drv_t *hardware;
 }iic_sim_interface_t;
 
-void iic_sim_init(iic_sim_interface_t *obj, iic_hardware_interface_t *hardware);
+void iic_sim_init(iic_sim_interface_t *obj, iic_hardware_drv_t *hardware);
 void iic_sim_start(iic_interface_t *obj);
 void iic_sim_stop(iic_interface_t *obj);
 void iic_sim_write_ack(iic_interface_t *obj);

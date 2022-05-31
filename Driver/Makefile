@@ -8,13 +8,23 @@ SUB_MODULES := $(filter-out Makefile, $(SUB_MODULES))
 SUB_MODULE_LIBS := $(addsuffix .a, $(SUB_MODULES))
 SUB_MODULE_LIBS := $(addprefix $(CURRENT_BUILD_DIR)/lib, $(SUB_MODULE_LIBS))
 BUILD_SUB_DIR := $(addprefix $(CURRENT_BUILD_DIR)/, $(SUB_MODULES))
+COMMON_INC_DIR := $(realpath ../Error) \
+$(realpath ../Bsp/STM32F7xx_HAL_Driver/Inc) \
+$(realpath ../Bsp/CMSIS/Device/ST/STM32F7xx/Include) \
+$(realpath ../Bsp/CMSIS/Include/)
 
+export COMMON_INC_DIR
 include $(MODULE_COMPILE)
+
 
 all: $(CURRENT_BUILD_DIR) $(BUILD_SUB_DIR) Makefile
 	@for dir in $(SUB_MODULES); \
     do \
-        $(call compile_module, $$dir, $(CURRENT_BUILD_DIR)) \
+        if [ -e "$$dir/Makefile" ]; then \
+        	$(call compile_module, $$dir, $(CURRENT_BUILD_DIR)) \
+		elif [ -e "$$dir/makefile" ]; then \
+		    $(call compile_module, $$dir, $(CURRENT_BUILD_DIR)) \
+		fi \
     done
 
 $(CURRENT_BUILD_DIR) $(BUILD_SUB_DIR):

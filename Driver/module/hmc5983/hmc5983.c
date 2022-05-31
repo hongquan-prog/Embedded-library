@@ -169,7 +169,7 @@ unsigned char hmc5983_set_measurement_configuration(hmc5983_t *obj, hmc_measurem
 
 unsigned char hmc5983_set_gain(hmc5983_t *obj, hmc_gain_t gain)
 {
-    return hmc5983_set_parameter(obj, HMC_CRB, 4, 4, gain);
+    return hmc5983_set_parameter(obj, HMC_CRB, 5, 3, gain);
 }
 
 unsigned char hmc5983_set_high_speed_mode(hmc5983_t *obj, unsigned char state)
@@ -201,7 +201,7 @@ unsigned char hmc5983_get_result(hmc5983_t *obj, short *x, short *y, short *z)
         if (hmc5983_is_ready(obj))
         {
             ret = 1;
-            hmc5983_read_bytes(obj, HMC_DO_ZL, val, 6);
+            hmc5983_read_bytes(obj, HMC_DO_XH, val, 6);
             *x = val[0] << 8 | val[1];
             *y = val[2] << 8 | val[3];
             *z = val[4] << 8 | val[5];
@@ -211,7 +211,7 @@ unsigned char hmc5983_get_result(hmc5983_t *obj, short *x, short *y, short *z)
         if (hmc5983_is_ready(obj))
         {
             ret = 1;
-            hmc5983_read_bytes(obj, HMC_DO_ZL, val, 6);
+            hmc5983_read_bytes(obj, HMC_DO_XH, val, 6);
             *x = val[0] << 8 | val[1];
             *y = val[2] << 8 | val[3];
             *z = val[4] << 8 | val[5];

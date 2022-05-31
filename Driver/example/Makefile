@@ -9,6 +9,15 @@ SUB_MODULE_LIBS := $(addsuffix .a, $(SUB_MODULES))
 SUB_MODULE_LIBS := $(addprefix $(CURRENT_BUILD_DIR)/lib, $(SUB_MODULE_LIBS))
 BUILD_SUB_DIR := $(addprefix $(CURRENT_BUILD_DIR)/, $(SUB_MODULES))
 
+MODULE_INC := $(wildcard ../module/*)
+MODULE_INC := $(filter-out ../module/Makefile, $(MODULE_INC))
+MODULE_INC := $(realpath $(MODULE_INC))
+INTERFACE_INC := $(wildcard ../interface/*)
+INTERFACE_INC := $(filter-out ../interface/Makefile, $(INTERFACE_INC))
+INTERFACE_INC := $(realpath $(INTERFACE_INC))
+
+export MODULE_INC
+export INTERFACE_INC
 include $(MODULE_COMPILE)
 
 all: $(CURRENT_BUILD_DIR) $(BUILD_SUB_DIR) Makefile

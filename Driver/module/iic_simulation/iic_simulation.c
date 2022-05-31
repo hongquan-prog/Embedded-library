@@ -1,6 +1,6 @@
 #include "iic_simulation.h"
 
-void iic_sim_init(iic_sim_interface_t *obj, iic_hardware_interface_t *hardware)
+void iic_sim_init(iic_sim_interface_t *obj, iic_hardware_drv_t *hardware)
 {
     static iic_vtable_t s_vtable = {
         .start = iic_sim_start,

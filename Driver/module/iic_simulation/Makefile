@@ -1,9 +1,8 @@
 include $(MODULE_CFG)
 
 SRC_DIR := .
-INC_DIR := \
-../../interface/iic_interface \
-../../../Error
+INC_DIR := . $(INTERFACE_INC) $(COMMON_INC_DIR)
+
 # ifneq ("$(COMMON_INC_DIR)","")
 # INC_DIR += $(COMMON_INC_DIR)
 # endif

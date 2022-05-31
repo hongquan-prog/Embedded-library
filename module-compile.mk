@@ -8,6 +8,6 @@ define compile_module
     MODULE_CFG:=$(abspath $(MODULE_CFG)) \
     MODULE_RULE:=$(abspath $(MODULE_RULE)) \
     MODULE_CMD:=$(abspath $(MODULE_CMD)) \
-    MODULE_COMPILE:=$(abspath $(MODULE_COMPILE))\
+    MODULE_COMPILE:=$(abspath $(MODULE_COMPILE)) \
     && cd .. ; 
 endef
