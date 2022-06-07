@@ -6,131 +6,97 @@
 
 void list_insert(List *list, int i, ListNode node)
 {
-    if ((*((list_vtable_def **)list))->insert)
-    {
-        (*((list_vtable_def **)list))->insert(list, i, node);
-    }
-    else
-    {
-        LOG(ERR_CONSTRUCT(NullPointer), "insert function not exist in vtable");
-    }
+    DEBUG_ASSET((*((list_vtable_def **)list))->insert);
+    (*((list_vtable_def **)list))->insert(list, i, node);
 }
 
 ListNode list_remove(List *list, int i)
 {
     ListNode ret = NULL;
-    if ((*((list_vtable_def **)list))->remove)
-    {
-        ret = (*((list_vtable_def **)list))->remove(list, i);
-    }
-    else
-    {
-        LOG(ERR_CONSTRUCT(NullPointer), "remove function not exist in vtable");
-    }
+    DEBUG_ASSET((*((list_vtable_def **)list))->remove);
+    ret = (*((list_vtable_def **)list))->remove(list, i);
+
     return ret;
 }
 
 ListNode list_get(List *list, int i)
 {
     ListNode ret = NULL;
-    if ((*((list_vtable_def **)list))->get)
-    {
-        (*((list_vtable_def **)list))->get(list, i, &ret);
-    }
-    else
-    {
-        LOG(ERR_CONSTRUCT(NullPointer), "get function not exist in vtable");
-    }
-    return ret;
-}
 
-bool list_set(List *list, int i, const ListNode node)
-{
-    if ((*((list_vtable_def **)list))->set)
-    {
-        return (*((list_vtable_def **)list))->set(list, i, node);
-    }
-    else
-    {
-        LOG(ERR_CONSTRUCT(NullPointer), "set function not exist in vtable");
-        return false;
-    }
+    DEBUG_ASSET((*((list_vtable_def **)list))->get);
+    (*((list_vtable_def **)list))->get(list, i, &ret);
+
+    return ret;
 }
 
 int list_length(List *list)
 {
-    if ((*((list_vtable_def **)list))->length)
-    {
-        return (*((list_vtable_def **)list))->length(list);
-    }
-    else
-    {
-        LOG(ERR_CONSTRUCT(NullPointer), "length function not exist in vtable");
-        return 0;
-    }
+    DEBUG_ASSET((*((list_vtable_def **)list))->length);
+    return (*((list_vtable_def **)list))->length(list);
 }
 
 int list_find(List *list, const ListNode node)
 {
-    if ((*((list_vtable_def **)list))->find)
-    {
-        return (*((list_vtable_def **)list))->find(list, node);
-    }
-    else
-    {
-        LOG(ERR_CONSTRUCT(NullPointer), "find function not exist in vtable");
-        return -1;
-    }
+    DEBUG_ASSET((*((list_vtable_def **)list))->find);
+    return (*((list_vtable_def **)list))->find(list, node);
 }
 
 void list_begin(List *list)
 {
-    if ((*((list_vtable_def **)list))->begin)
-    {
-        (*((list_vtable_def **)list))->begin(list);
-    }
+    DEBUG_ASSET((*((list_vtable_def **)list))->begin);
+    (*((list_vtable_def **)list))->begin(list);
 }
 
 void list_next(List *list)
 {
-    if ((*((list_vtable_def **)list))->next)
-    {
-        (*((list_vtable_def **)list))->next(list);
-    }
+    DEBUG_ASSET((*((list_vtable_def **)list))->next);
+    (*((list_vtable_def **)list))->next(list);
 }
 
 void list_pre(List *list)
 {
-    if ((*((list_vtable_def **)list))->next)
-    {
-        (*((list_vtable_def **)list))->pre(list);
-    }
+    DEBUG_ASSET((*((list_vtable_def **)list))->pre);
+    (*((list_vtable_def **)list))->pre(list);
 }
 
 bool list_end(List *list)
 {
-    bool ret = true;
-    if ((*((list_vtable_def **)list))->end)
-    {
-        ret = (*((list_vtable_def **)list))->end(list);
-    }
-    return ret;
+    DEBUG_ASSET((*((list_vtable_def **)list))->end);
+    return (*((list_vtable_def **)list))->end(list);
 }
 
 ListNode list_current(List *list)
 {
-    ListNode ret = NULL;
-    if ((*((list_vtable_def **)list))->current)
-    {
-        ret = (*((list_vtable_def **)list))->current(list);
-    }
-    return ret;
+    DEBUG_ASSET((*((list_vtable_def **)list))->current);
+    return (*((list_vtable_def **)list))->current(list);
 }
 
 void list_destory(List *list)
 {
-    if((*((list_vtable_def **)list))->destroy)
-    {
-        (*((list_vtable_def **)list))->destroy(list);
-    }
+    DEBUG_ASSET((*((list_vtable_def **)list))->destroy);
+    (*((list_vtable_def **)list))->destroy(list);
+}
+
+bool list_push_back(List *list, const ListNode node)
+{
+    DEBUG_ASSET((*((list_vtable_def **)list))->push_back);
+    return (*((list_vtable_def **)list))->push_back(list, node);
+}
+
+bool list_push_front(List *list, const ListNode node)
+{
+    DEBUG_ASSET((*((list_vtable_def **)list))->push_front);
+    return (*((list_vtable_def **)list))->push_front(list, node);
+}
+
+ListNode list_pop_back(List *list)
+{
+    DEBUG_ASSET((*((list_vtable_def **)list))->pop_back);
+    return (*((list_vtable_def **)list))->pop_back(list);
+}
+
+ListNode list_pop_front(List *list)
+{
+    DEBUG_ASSET((*((list_vtable_def **)list))->pop_front);
+    return (*((list_vtable_def **)list))->pop_front(list);
 }

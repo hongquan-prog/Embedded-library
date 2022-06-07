@@ -4,10 +4,22 @@
 
 #include "DualLinkList.h"
 
+static void dual_link_list_destroy(DualLinkList *list);
+static bool dual_link_list_insert(DualLinkList *list, int i, const DualLinkListNode node);
+static DualLinkListNode dual_link_list_remove(DualLinkList *list, int i);
+static int dual_link_list_length(DualLinkList *list);
+static int dual_link_list_find(DualLinkList *list, const DualLinkListNode node);
+static bool dual_link_list_get(DualLinkList *list, int i, DualLinkListNode *node);
+static void dual_link_list_begin(DualLinkList *list);
+static void dual_link_list_next(DualLinkList *list);
+static void dual_link_list_pre(DualLinkList *list);
+static bool dual_link_list_end(DualLinkList *list);
+static DualLinkListNode dual_link_list_current(DualLinkList *list);
+
 DualLinkListNode dual_link_list_position(DualLinkList *list, int position)
 {
     dual_link_list_def *obj = (dual_link_list_def *)list;
-    struct dual_link_list_node *current = (struct dual_link_list_node *)(&(obj->m_head));
+    struct dual_link_list_node *current = (struct dual_link_list_node *)(&(obj->head));
 
     for (int i = 0; i < position; i++)
     {
@@ -16,14 +28,13 @@ DualLinkListNode dual_link_list_position(DualLinkList *list, int position)
     return current;
 }
 
-DualLinkList *dual_link_list_create(list_create_t type, DualLinkList* list)
+DualLinkList *dual_link_list_create(list_type_t type, DualLinkList* list)
 {
     static list_vtable_def s_dual_link_list_vtable = {
             .insert = dual_link_list_insert,
             .remove = dual_link_list_remove,
             .find = dual_link_list_find,
             .get = dual_link_list_get,
-            .set = NULL,
             .length = dual_link_list_length,
             .destroy = dual_link_list_destroy,
             .begin = dual_link_list_begin,
@@ -34,46 +45,46 @@ DualLinkList *dual_link_list_create(list_create_t type, DualLinkList* list)
 
     dual_link_list_def *ret = NULL;
 
-    if(type == LIST_CREATE_DYNAMIC)
+    if(type == LIST_DYNAMIC)
     {
         ret = malloc(sizeof(dual_link_list_def));
         if (ret)
         {
-            ret->m_length = 0;
-            ret->m_vtable = &s_dual_link_list_vtable;
-            ret->m_head.next = NULL;
-            ret->m_head.pre = NULL;
-            ret->m_is_static = false;
+            ret->length = 0;
+            ret->vtable = &s_dual_link_list_vtable;
+            ret->head.next = NULL;
+            ret->head.pre = NULL;
+            ret->list_type = type;
         }
     }
     else if(list)
     {
         ret = (dual_link_list_def *)list;
-        ret->m_length = 0;
-        ret->m_vtable = &s_dual_link_list_vtable;
-        ret->m_head.next = NULL;
-        ret->m_head.pre = NULL;
-        ret->m_is_static = true;
+        ret->length = 0;
+        ret->vtable = &s_dual_link_list_vtable;
+        ret->head.next = NULL;
+        ret->head.pre = NULL;
+        ret->list_type = type;
     }
 
     return (DualLinkList *)ret;
 }
 
-bool dual_link_list_insert(DualLinkList *list, int i, const DualLinkListNode node)
+static bool dual_link_list_insert(DualLinkList *list, int i, const DualLinkListNode node)
 {
     bool ret = true;
     dual_link_list_def *obj = (dual_link_list_def *)list;
 
-    if (obj && (i >= 0) && (i <= obj->m_length) && node)
+    if (obj && (i >= 0) && (i <= obj->length) && node)
     {
         struct dual_link_list_node *current = dual_link_list_position(obj, i);
         if (current)
         {
             struct dual_link_list_node *next = current->next;
             ((struct dual_link_list_node *)node)->next = next;
-            ((struct dual_link_list_node *)node)->pre = (current == &(obj->m_head)) ? (NULL) : (current);
+            ((struct dual_link_list_node *)node)->pre = (current == &(obj->head)) ? (NULL) : (current);
             current->next = node;
-            ++obj->m_length;
+            ++obj->length;
             if (next)
             {
                 next->pre = node;
@@ -87,12 +98,12 @@ bool dual_link_list_insert(DualLinkList *list, int i, const DualLinkListNode nod
     return ret;
 }
 
-DualLinkListNode dual_link_list_remove(DualLinkList *list, int i)
+static DualLinkListNode dual_link_list_remove(DualLinkList *list, int i)
 {
     DualLinkListNode ret = NULL;
     dual_link_list_def *obj = (dual_link_list_def *)list;
 
-    if (obj && (i >= 0) && (i < obj->m_length))
+    if (obj && (i >= 0) && (i < obj->length))
     {
         struct dual_link_list_node *current = dual_link_list_position(obj, i);
         struct dual_link_list_node *toDel = (current) ? (current->next) : (NULL);
@@ -101,7 +112,7 @@ DualLinkListNode dual_link_list_remove(DualLinkList *list, int i)
         {
             ret = toDel;
             current->next = next;
-            --obj->m_length;
+            --obj->length;
             if (next)
             {
                 next->pre = toDel->pre;
@@ -111,71 +122,71 @@ DualLinkListNode dual_link_list_remove(DualLinkList *list, int i)
     return ret;
 }
 
-void dual_link_list_destroy(DualLinkList *list)
+static void dual_link_list_destroy(DualLinkList *list)
 {
-    if(((dual_link_list_def *)list)->m_is_static == LIST_CREATE_DYNAMIC)
+    if(((dual_link_list_def *)list)->list_type == LIST_DYNAMIC)
     {
         free(list);
     }
 }
 
-int dual_link_list_length(DualLinkList *list)
+static int dual_link_list_length(DualLinkList *list)
 {
-    return ((dual_link_list_def *)list)->m_length;
+    return ((dual_link_list_def *)list)->length;
 }
 
-void dual_link_list_begin(DualLinkList *list)
-{
-    if (list)
-    {
-        ((dual_link_list_def *)list)->m_current = ((dual_link_list_def *)list)->m_head.next;
-    }
-}
-
-void dual_link_list_next(DualLinkList *list)
+static void dual_link_list_begin(DualLinkList *list)
 {
     if (list)
     {
-        ((dual_link_list_def *)list)->m_current = ((dual_link_list_def *)list)->m_current->next;
+        ((dual_link_list_def *)list)->current = ((dual_link_list_def *)list)->head.next;
     }
 }
 
-void dual_link_list_pre(DualLinkList *list)
+static void dual_link_list_next(DualLinkList *list)
 {
     if (list)
     {
-        ((dual_link_list_def *)list)->m_current = ((dual_link_list_def *)list)->m_current->pre;
+        ((dual_link_list_def *)list)->current = ((dual_link_list_def *)list)->current->next;
     }
 }
 
-bool dual_link_list_end(DualLinkList *list)
+static void dual_link_list_pre(DualLinkList *list)
+{
+    if (list)
+    {
+        ((dual_link_list_def *)list)->current = ((dual_link_list_def *)list)->current->pre;
+    }
+}
+
+static bool dual_link_list_end(DualLinkList *list)
 {
     bool ret = false;
 
     if (list)
     {
         dual_link_list_def *obj = list;
-        ret = (obj->m_current == NULL);
+        ret = (obj->current == NULL);
     }
 
     return ret;
 }
 
-DualLinkListNode dual_link_list_current(DualLinkList *list)
+static DualLinkListNode dual_link_list_current(DualLinkList *list)
 {
-    return (list) ? (((dual_link_list_def *)list)->m_current) : (NULL);
+    return (list) ? (((dual_link_list_def *)list)->current) : (NULL);
 }
 
-int dual_link_list_find(DualLinkList *list, const DualLinkListNode node)
+static int dual_link_list_find(DualLinkList *list, const DualLinkListNode node)
 {
     int ret = -1;
     dual_link_list_def *obj = (dual_link_list_def *)list;
 
     if (obj && node)
     {
-        struct dual_link_list_node *current = &(obj->m_head);
+        struct dual_link_list_node *current = &(obj->head);
 
-        for (int i = 0; i < obj->m_length; i++)
+        for (int i = 0; i < obj->length; i++)
         {
             current = current->next;
             if (current == node)
@@ -189,12 +200,12 @@ int dual_link_list_find(DualLinkList *list, const DualLinkListNode node)
     return ret;
 }
 
-bool dual_link_list_get(DualLinkList *list, int i, DualLinkListNode *node)
+static bool dual_link_list_get(DualLinkList *list, int i, DualLinkListNode *node)
 {
     bool ret = true;
     dual_link_list_def *obj = (dual_link_list_def *)list;
 
-    if (obj && (i >= 0) && (i < obj->m_length) && node)
+    if (obj && (i >= 0) && (i < obj->length) && node)
     {
         struct dual_link_list_node *current = dual_link_list_position(obj, i);
         *((struct dual_link_list_node **)node) = current->next;

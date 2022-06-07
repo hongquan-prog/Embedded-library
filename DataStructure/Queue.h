@@ -10,7 +10,7 @@
 typedef void Queue;
 typedef void *QueueNode;
 
-Queue *queue_create(list_create_t type, Queue *queue);
+Queue *queue_create(list_type_t type, Queue *queue);
 bool queue_is_contained(Queue *queue, const QueueNode node);
 bool queue_add(Queue *queue, QueueNode node);
 QueueNode queue_front(Queue *queue);

@@ -1,5 +1,7 @@
 #include "err.h"
 
+char g_error_str_buf[ERR_STR_BUF_SIZE];
+
 // generate begin
 static struct error_str_t
 {

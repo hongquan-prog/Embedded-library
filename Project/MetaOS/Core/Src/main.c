@@ -95,7 +95,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  Queue *list = queue_create(LIST_CREATE_DYNAMIC, NULL);
+  Queue *list = queue_create(LIST_DYNAMIC, NULL);
 
   for (int i = 0; i < 10; i++)
   {

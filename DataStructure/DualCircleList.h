@@ -10,13 +10,6 @@
 typedef void DualCircleList;
 typedef void *DualCircleListNode;
 
-DualCircleList *dual_circle_list_create(list_create_t type, DualCircleList* list);
-void dual_circle_list_destroy(DualCircleList *list);
-bool dual_circle_push_back(DualCircleList *list, DualCircleListNode node);
-bool dual_circle_push_front(DualCircleList *list, DualCircleListNode node);
-DualCircleListNode dual_circle_pop_front(DualCircleList *list);
-DualCircleListNode dual_circle_pop_back(DualCircleList *list);
-bool dual_circle_list_insert(DualCircleList *list, int i, const DualCircleListNode node);
-DualCircleListNode dual_circle_list_remove(DualCircleList *list, int i);
+DualCircleList *dual_circle_list_create(list_type_t type, DualCircleList* list);
 
 #endif //EMBEDDED_DUALCIRCLELIST_H
