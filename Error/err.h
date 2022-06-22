@@ -15,7 +15,7 @@ extern char g_error_str_buf[ERR_STR_BUF_SIZE];
   }
 
 #if ((1 == ENABLE_GLOBAL_DEBUG) || (defined(DEBUG) && (1 == DEBUG)))
-#define DEBUG_ASSET(p)                                                  \
+#define DEBUG_ASSERT(p)                                                  \
   {                                                                     \
     if (!(p))                                                           \
     {                                                                   \
@@ -27,7 +27,7 @@ extern char g_error_str_buf[ERR_STR_BUF_SIZE];
 #define DEBUG_PRINT(code, format, ...) LOG(ERR_CONSTRUCT(code), format, ##__VA_ARGS__)
 #else
 #define DEBUG_PRINT(code, format, ...)
-#define DEBUG_ASSET(p) \
+#define DEBUG_ASSERT(p) \
   {                    \
     while (!(p))       \
       ;                \
