@@ -32,8 +32,6 @@ typedef enum
     IO_NUM
 }io_pin_def;
 
-
-
 typedef struct
 {
     void (*init)(io_pin_def port, io_pull_def pull, io_mode_def mode);
