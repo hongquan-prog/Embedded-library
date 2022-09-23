@@ -26,7 +26,10 @@ typedef struct
     void (*write_nack)(iic_interface_t *obj);
     unsigned char (*wait_ack)(iic_interface_t *obj);
     void (*write_byte)(iic_interface_t *obj, unsigned char data);
+    void (*write_bytes)(iic_interface_t *obj, unsigned char addr, unsigned char *data, int len, unsigned char stop);
     unsigned char (*read_byte)(iic_interface_t *obj, unsigned char ack);
+    int (*read_bytes)(iic_interface_t *obj, unsigned char addr, unsigned char *data, int len);
+    int (*write_read)(iic_interface_t *obj, unsigned char addr, unsigned char *wdata, int wlen, unsigned char *rdata, int rlen);
 } iic_vtable_t;
 
 void iic_start(iic_interface_t *obj);
@@ -35,4 +38,7 @@ void iic_write_ack(iic_interface_t *obj);
 void iic_write_nack(iic_interface_t *obj);
 unsigned char iic_wait_ack(iic_interface_t *obj);
 void iic_write_byte(iic_interface_t *obj, unsigned char data);
+void iic_write_bytes(iic_interface_t *obj, unsigned char addr, unsigned char *data, int len, unsigned char stop);
 unsigned char iic_read_byte(iic_interface_t *obj, unsigned char ack);
+int iic_read_bytes(iic_interface_t *obj, unsigned char addr, unsigned char *data, int len);
+int iic_write_read(iic_interface_t *obj, unsigned char addr, unsigned char *wdata, int wlen, unsigned char *rdata, int rlen);

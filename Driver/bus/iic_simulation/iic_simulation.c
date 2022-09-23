@@ -5,11 +5,15 @@ void iic_sim_init(iic_sim_interface_t *obj, iic_hardware_drv_t *hardware)
     static iic_vtable_t s_vtable = {
         .start = iic_sim_start,
         .stop = iic_sim_stop,
-        .read_byte = iic_sim_read_byte,
-        .write_byte = iic_sim_write_byte,
         .write_ack = iic_sim_write_ack,
         .write_nack = iic_sim_write_nack,
-        .wait_ack = iic_sim_wait_ack};
+        .wait_ack = iic_sim_wait_ack,
+        .write_byte = iic_sim_write_byte,
+        .write_bytes = iic_sim_write_bytes,
+        .read_byte = iic_sim_read_byte,
+        .read_bytes = iic_sim_read_bytes,
+        .write_read = iic_sim_write_read
+    };
 
     if (obj && hardware)
     {
@@ -20,7 +24,7 @@ void iic_sim_init(iic_sim_interface_t *obj, iic_hardware_drv_t *hardware)
 
 void iic_sim_start(iic_interface_t *p)
 {
-	iic_sim_interface_t *obj = (iic_sim_interface_t *)p;
+    iic_sim_interface_t *obj = (iic_sim_interface_t *)p;
 
     obj->hardware->sda_set_mode(IIC_PORT_OUT);
     obj->hardware->sda_write(1);
@@ -115,6 +119,26 @@ void iic_sim_write_byte(iic_interface_t *p, unsigned char data)
     }
 }
 
+void iic_sim_write_bytes(iic_interface_t *p, unsigned char addr, unsigned char *data, int len, unsigned char stop)
+{
+    int i = 0;
+    
+    iic_sim_start(p);
+    iic_sim_write_byte(p, addr << 1);
+    iic_sim_wait_ack(p);
+
+    for (i = 0; i < len; i++)
+    {
+        iic_sim_write_byte(p, data[i]);
+        iic_sim_wait_ack(p);
+    }
+
+    if (stop)
+    {
+        iic_sim_stop(p);
+    }
+}
+
 unsigned char iic_sim_read_byte(iic_interface_t *p, unsigned char ack)
 {
     unsigned char ret = 0;
@@ -146,4 +170,29 @@ unsigned char iic_sim_read_byte(iic_interface_t *p, unsigned char ack)
     }
 
     return ret;
+}
+
+int iic_sim_read_bytes(iic_interface_t *p, unsigned char addr, unsigned char *data, int len)
+{
+    int i = 0;
+    
+    iic_sim_start(p);
+    iic_sim_write_byte(p, (addr << 1) + 1);
+    iic_sim_wait_ack(p);
+
+    for (i = 0; i < len; i++)
+    {
+        data[i] = iic_sim_read_byte(p, i != (len - 1));
+    }
+
+    iic_sim_stop(p);
+
+    return i;
+}
+
+int iic_sim_write_read(iic_interface_t *p, unsigned char addr, unsigned char *wdata, int wlen, unsigned char *rdata, int rlen)
+{
+    iic_sim_write_bytes(p, addr, wdata, wlen, 0);
+    
+    return iic_sim_read_bytes(p, addr, rdata, rlen);
 }

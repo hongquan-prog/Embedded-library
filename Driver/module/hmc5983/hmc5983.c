@@ -10,75 +10,22 @@
 #endif
 
 #define HMC_DEFAULT_ADDR 0x1E
-#define HMC_READ ((HMC_DEFAULT_ADDR << 1) | 1)
-#define HMC_WRITE (HMC_DEFAULT_ADDR << 1)
 
 static void hmc5983_read_byte(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char *buf)
 {
-    if (obj)
-    {
-        iic_start(obj->iic);
-        iic_write_byte(obj->iic, HMC_WRITE);
-        iic_wait_ack(obj->iic);
-        iic_write_byte(obj->iic, reg);
-        iic_wait_ack(obj->iic);
-        iic_start(obj->iic);
-        iic_write_byte(obj->iic, HMC_READ);
-        iic_wait_ack(obj->iic);
-        *buf = iic_read_byte(obj->iic, 0);
-        iic_stop(obj->iic);
-    }
-    else
-    {
-        HMC_LOG("please check obj\r\n");
-    }
+    iic_write_read(obj->iic, HMC_DEFAULT_ADDR, &reg, 1, buf, 1);
 }
 
 static void hmc5983_read_bytes(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char *buf, int len)
 {
-    int i = 0;
-
-    if (obj)
-    {
-        iic_start(obj->iic);
-        iic_write_byte(obj->iic, HMC_WRITE);
-        iic_wait_ack(obj->iic);
-        iic_write_byte(obj->iic, reg);
-        iic_wait_ack(obj->iic);
-        iic_start(obj->iic);
-        iic_write_byte(obj->iic, HMC_READ);
-        iic_wait_ack(obj->iic);
-
-        for (i = 0; i < len - 1; i++)
-        {
-            buf[i] = iic_read_byte(obj->iic, 1);
-        }
-        buf[i] = iic_read_byte(obj->iic, 0);
-        iic_stop(obj->iic);
-    }
-    else
-    {
-        HMC_LOG("please check obj\r\n");
-    }
+    iic_write_read(obj->iic, HMC_DEFAULT_ADDR, &reg, 1, buf, len);
 }
 
 static void hmc5983_write_byte(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char val)
 {
-    if (obj)
-    {
-        iic_start(obj->iic);
-        iic_write_byte(obj->iic, HMC_WRITE);
-        iic_wait_ack(obj->iic);
-        iic_write_byte(obj->iic, reg);
-        iic_wait_ack(obj->iic);
-        iic_write_byte(obj->iic, val);
-        iic_wait_ack(obj->iic);
-        iic_stop(obj->iic);
-    }
-    else
-    {
-        HMC_LOG("please check obj\r\n");
-    }
+    unsigned char wdata[2] = { reg, val };
+    
+    iic_write_bytes(obj->iic, HMC_DEFAULT_ADDR, wdata, 2, 1);
 }
 
 unsigned char hmc5983_init(hmc5983_t *obj, iic_interface_t *iic, hmc_measurement_mode_t mode)
