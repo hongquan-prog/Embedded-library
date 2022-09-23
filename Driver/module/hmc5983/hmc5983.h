@@ -89,8 +89,8 @@ typedef struct hmc5983
 }hmc5983_t;
 
 unsigned char hmc5983_init(hmc5983_t *obj, iic_interface_t* iic, hmc_measurement_mode_t mode);
-static unsigned char hmc5983_set_parameter(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char begin, int len, unsigned char value);
-static unsigned char hmc5983_get_parameter(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char begin, int len, unsigned char *val);
+unsigned char hmc5983_set_parameter(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char begin, int len, unsigned char value);
+unsigned char hmc5983_get_parameter(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char begin, int len, unsigned char *val);
 unsigned char hmc5983_set_temperature_compensation(hmc5983_t *obj, unsigned char state);
 unsigned char hmc5983_set_measurement_average(hmc5983_t *obj, hmc_measurement_average_t times);
 unsigned char hmc5983_set_data_out_rate(hmc5983_t *obj, hmc_data_output_rate_t rate);

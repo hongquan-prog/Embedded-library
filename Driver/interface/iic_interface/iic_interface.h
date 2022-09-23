@@ -5,7 +5,8 @@ typedef void iic_interface_t;
 typedef enum 
 {
     IIC_PORT_IN,
-    IIC_PORT_OUT
+    IIC_PORT_OUT,
+    IIC_PORT_MODE_NUM
 } iic_port_mode_t;
 
 typedef struct 

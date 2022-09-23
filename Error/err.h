@@ -28,9 +28,9 @@ extern char g_error_str_buf[ERR_STR_BUF_SIZE];
 #else
 #define DEBUG_PRINT(code, format, ...)
 #define DEBUG_ASSERT(p) \
-  {                    \
-    while (!(p))       \
-      ;                \
+  {                     \
+    while (!(p))        \
+      ;                 \
   }
 #endif
 

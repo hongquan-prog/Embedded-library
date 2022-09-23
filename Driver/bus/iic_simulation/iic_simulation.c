@@ -15,6 +15,8 @@ void iic_sim_init(iic_sim_interface_t *obj, iic_hardware_drv_t *hardware)
     {
         obj->vtabel = &s_vtable;
         obj->hardware = hardware;
+        obj->hardware->sda_set_mode(IIC_PORT_OUT);
+        obj->hardware->scl_set_mode(IIC_PORT_OUT);
     }
 }
 
