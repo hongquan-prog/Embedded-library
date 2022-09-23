@@ -1,13 +1,13 @@
 # set CMAKE_SYSTEM_NAME to define build as CMAKE_CROSSCOMPILING
 set(CMAKE_SYSTEM_NAME Generic)
-set(CMAKE_SYSTEM_VERSION Cortex-M4-GD32F303)
+set(CMAKE_SYSTEM_VERSION Cortex-M7-STM32F767IGT6)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
 set(CMAKE_C_COMPILER arm-none-eabi-gcc)
 set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
 
 # --specs=nano.specs is both a compiler and linker option
-set(ARM_OPTIONS -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard)
+set(ARM_OPTIONS -mcpu=cortex-m7 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard)
 
 add_compile_options(
   ${ARM_OPTIONS}

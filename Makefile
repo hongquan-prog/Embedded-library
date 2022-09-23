@@ -1,7 +1,7 @@
 .PHONY: all clean update flash menuconfig config
 
-BUILD_TYPE := RELEASE
-# BUILD_TYPE := DEBUG
+# BUILD_TYPE := RELEASE
+BUILD_TYPE := DEBUG
 
 all: config
 	cmake --build build

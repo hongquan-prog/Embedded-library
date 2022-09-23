@@ -33,6 +33,7 @@ set(SOURCE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/module/rc522
     ${CMAKE_CURRENT_SOURCE_DIR}/module/sdcard
     ${CMAKE_CURRENT_SOURCE_DIR}/module/sgp30
+    ${CMAKE_CURRENT_SOURCE_DIR}/module/sht3x
     ${CMAKE_CURRENT_SOURCE_DIR}/module/w25qxx
     ${CMAKE_CURRENT_SOURCE_DIR}/module/ws2812
 )

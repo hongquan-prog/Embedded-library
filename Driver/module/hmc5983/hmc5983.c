@@ -53,7 +53,7 @@ unsigned char hmc5983_init(hmc5983_t *obj, iic_interface_t *iic, hmc_measurement
     return ret;
 }
 
-static unsigned char hmc5983_set_parameter(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char begin, int len, unsigned char value)
+unsigned char hmc5983_set_parameter(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char begin, int len, unsigned char value)
 {
     unsigned char ret = 0;
     unsigned char val = 0;
@@ -75,7 +75,7 @@ static unsigned char hmc5983_set_parameter(hmc5983_t *obj, hmc_reg_addr_t reg, u
     return ret;
 }
 
-static unsigned char hmc5983_get_parameter(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char begin, int len, unsigned char *val)
+unsigned char hmc5983_get_parameter(hmc5983_t *obj, hmc_reg_addr_t reg, unsigned char begin, int len, unsigned char *val)
 {
     unsigned char ret = 0;
     unsigned char tmp = 0;
