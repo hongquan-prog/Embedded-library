@@ -31,10 +31,10 @@ void iic_write_byte(iic_interface_t *obj, unsigned char data)
     DEBUG_ASSERT((*((iic_vtable_t **)obj))->write_byte);
     (*((iic_vtable_t **)obj))->write_byte(obj, data);
 }
-void iic_write_bytes(iic_interface_t *obj, unsigned char addr, unsigned char *data, int len, unsigned char stop)
+int iic_write_bytes(iic_interface_t *obj, unsigned char addr, unsigned char *data, int len, unsigned char stop)
 {
     DEBUG_ASSERT((*((iic_vtable_t **)obj))->write_bytes);
-    (*((iic_vtable_t **)obj))->write_bytes(obj, addr, data, len, stop);
+    return (*((iic_vtable_t **)obj))->write_bytes(obj, addr, data, len, stop);
 }
 unsigned char iic_read_byte(iic_interface_t *obj, unsigned char ack)
 {

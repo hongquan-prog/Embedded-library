@@ -4,7 +4,7 @@ set(CMAKE_VERBOSE_MAKEFILE TRUE)
 project(MetaOS LANGUAGES C CXX ASM)
 
 # source directory
-set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Project/SHT3x)
+set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Project/SGP30)
 
 # ASM sources
 set(ASM_SOURCES ${SOURCE_DIR}/startup_stm32f767xx.s)

@@ -220,7 +220,7 @@ unsigned int hmc5983_read_temperature(hmc5983_t *obj)
     return ret;
 }
 
-float hmc5983_temperature_convert(hmc5983_t *obj, unsigned int value)
+float hmc5983_temperature_convert(unsigned int value)
 {
     return value / 128.0 + 25.0;
 }
