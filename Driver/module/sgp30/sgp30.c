@@ -3,7 +3,6 @@
 #define SGP30_DEFAULT_ADDR 0x58
 #define SGP30_PRODUCT_TYPE 0
 
-static volatile int s_delay_cnt = 0;
 static unsigned char crc8(unsigned char *data, int len);
 static void sgp30_write_cmd(sgp30_t *obj, sgp30_cmd_def cmd, unsigned short *data, unsigned char len);
 static unsigned char sgp30_read_cmd(sgp30_t *obj, sgp30_cmd_def cmd, unsigned short *data, unsigned char len);
@@ -43,7 +42,7 @@ void sgp30_measure_delay(void)
 {
     int i = 0;
 
-    for(i = 0; i < 500000; i++)
+    for(i = 0; i < 3000000; i++)
     {
         asm volatile("");
     }

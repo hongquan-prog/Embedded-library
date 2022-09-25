@@ -52,7 +52,7 @@ static void delay(void)
 
     for(i = 0; i < 100; i++)
     {
-        (void)i;
+        asm volatile("");
     }
 }
 
