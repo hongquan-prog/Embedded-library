@@ -1,25 +1,22 @@
 #pragma once
 
-typedef char    BOOL;
-typedef unsigned char UCHAR;
-typedef char    CHAR;
-typedef unsigned short USHORT;
-typedef short   SHORT;
-typedef unsigned long ULONG;
-typedef long    LONG;
+#include "mbport.h"
 
-#ifndef TRUE
-#define TRUE            1
-#endif
+typedef struct
+{
+    void(*enter_critical)(void);
+    void(*exit_critical)(void);
+    BOOL(*serial_init)(UCHAR ucPort, ULONG ulBaudRate, UCHAR ucDataBits, eMBParity eParity);
+    void(*serial_enable)(BOOL xRxEnable, BOOL xTxEnable);
+    BOOL(*serial_write_byte)(CHAR ucByte);
+    BOOL(*serial_read_byte)(CHAR *pucByte);
+    BOOL(*event_init)(void);
+    BOOL(*event_post)(eMBEventType eEvent);
+    BOOL(*event_get)(eMBEventType *eEvent);
+    BOOL(*timer_init)(USHORT usTim1Timerout50us);
+    void (*timer_enable)(void);
+    void (*timer_disable)(void);
+    void (*timer_delay)(USHORT usTimeOutMS);
+} xMBInterface;
 
-#ifndef FALSE
-#define FALSE           0
-#endif
-
-#define assert(p)                   while (!(p)){}
-#define INLINE                      inline
-#define PR_BEGIN_EXTERN_C           extern "C" {
-#define	PR_END_EXTERN_C             }
-
-void ENTER_CRITICAL_SECTION(void);
-void EXIT_CRITICAL_SECTION(void);
+void vMBRegisterInterface(xMBInterface *interface);

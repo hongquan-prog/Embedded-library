@@ -1,26 +1,74 @@
 #include "port.h"
 
-typedef struct
-{
-    void(*enter_critical)(void);
-    void(*exit_critical)(void);
-} freemodbus_critical_t;
+xMBInterface prvxMBInterface = { 0 };
 
-freemodbus_critical_t s_critical_interface = { 0 };
-
-void freemodbus_register_interface(freemodbus_critical_t *interface)
+void vMBRegisterInterface(xMBInterface *interface)
 {
-    s_critical_interface = *interface;
+    prvxMBInterface = *interface;
 }
 
 void ENTER_CRITICAL_SECTION(void)
 {
-    assert(s_critical_interface.enter_critical);
-    s_critical_interface.enter_critical( );
+    prvxMBInterface.enter_critical( );
 }
 
 void EXIT_CRITICAL_SECTION(void)
 {
-    assert(s_critical_interface.exit_critical);
-    s_critical_interface.exit_critical( );
+    prvxMBInterface.exit_critical( );
+}
+
+BOOL xMBPortSerialInit(UCHAR ucPort, ULONG ulBaudRate, UCHAR ucDataBits, eMBParity eParity)
+{
+    return prvxMBInterface.serial_init(ucPort, ulBaudRate, ucDataBits, eParity);
+}
+
+void vMBPortSerialEnable(BOOL xRxEnable, BOOL xTxEnable)
+{
+    prvxMBInterface.serial_enable(xRxEnable, xTxEnable);
+}
+
+BOOL xMBPortSerialPutByte(CHAR ucByte)
+{
+    return prvxMBInterface.serial_write_byte(ucByte);
+}
+
+BOOL xMBPortSerialGetByte(CHAR *pucByte)
+{
+    pxMBFrameCBByteReceived( );
+    return prvxMBInterface.serial_read_byte(pucByte);
+}
+
+BOOL xMBPortEventInit(void)
+{
+    return prvxMBInterface.event_init( );
+}
+
+BOOL xMBPortEventPost(eMBEventType eEvent)
+{
+    return prvxMBInterface.event_post(eEvent);
+}
+
+BOOL xMBPortEventGet(eMBEventType *eEvent)
+{
+    return prvxMBInterface.event_get(eEvent);
+}
+
+BOOL xMBPortTimersInit(USHORT usTim1Timerout50us)
+{
+    return prvxMBInterface.timer_init(usTim1Timerout50us);
+}
+
+void vMBPortTimersEnable( )
+{
+    prvxMBInterface.timer_enable( );
+}
+
+void vMBPortTimersDisable( )
+{
+    prvxMBInterface.timer_disable( );
+}
+
+void vMBPortTimersDelay(USHORT usTimeOutMS)
+{
+    prvxMBInterface.timer_delay(usTimeOutMS);
 }

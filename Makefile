@@ -1,6 +1,6 @@
 .PHONY: all clean flash menuconfig config
 
-MODULES := MetaOS SGP30 SHT3x
+MODULES := MetaOS SGP30 SHT3x Modbus
 
 BUILD_TYPE := RELEASE
 # BUILD_TYPE := DEBUG

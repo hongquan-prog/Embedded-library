@@ -11,6 +11,7 @@ set(TARGET_NAME ${CURRENT_FOLDER})
 project(${TARGET_NAME} LANGUAGES C)
 
 # c sources
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} SRCS)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/ascii SRCS)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/functions SRCS)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/port SRCS)
