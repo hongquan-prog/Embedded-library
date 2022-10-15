@@ -9,16 +9,17 @@ all: config
 	cmake --build build
 
 config:
-	cmake -G Ninja -S . -B build -DCMAKE_TOOLCHAIN_FILE=tool.cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -DCMD_TARGET=${MAKECMDGOALS}
+	cmake -G Ninja -S . -B build -DCMAKE_TOOLCHAIN_FILE=tool.cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -DCMD_TARGET=MetaOS
 
 clean:
 	rm -r build
 
-flash: config
+flash:
 	cmake --build build --target flash
 
-menuconfig: config
+menuconfig:
 	ccmake . build
 
 ${MODULES}: config
+	cmake -G Ninja -S . -B build -DCMAKE_TOOLCHAIN_FILE=tool.cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -DCMD_TARGET=${MAKECMDGOALS}
 	cmake --build build
